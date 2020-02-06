@@ -1,0 +1,32 @@
+version: "3.7"
+
+services: 
+    nestjs:
+        image: node:alpine3.11
+        container_name: nestjs-backend-js
+        #restart: always
+        ports: 
+            - "3000:3000"
+        volumes: 
+            - "../../BACKEND/ecommerceartebackendnodejs:/usr/src/app"
+        working_dir: /usr/src/app/
+        command: ["node", "/usr/src/app/dist/main"]
+        #command: ["npm", "run", "migration:run"]
+        #command: ["npm", "run", "start:dev"]
+        depends_on: 
+            - postgres
+
+    postgres:
+        image: postgres:alpine
+        container_name: nestjs-backend-db
+        #restart: always
+        expose: 
+            - "5432"
+        volumes: 
+            - "pgdata:/var/lib/postgresql/data"
+        environment:
+            POSTGRES_USER: "ecommerce"
+            POSTGRES_PASSWORD: "@ecommerce1234"
+
+volumes: 
+    pgdata:
